@@ -1,5 +1,6 @@
 {
-  "name": "@semantest/client",
+
+  "name": "@semantest/typescript-client",
   "version": "2.0.0",
   "description": "TypeScript client SDK for Semantest - AI automation client library",
   "main": "dist/index.js",
@@ -49,9 +50,18 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/semantest/typescript.client.git",
+    "directory": "client"
+  },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/semantest/typescript.client/issues"
+  },
+  "homepage": "https://github.com/semantest/typescript.client"
 }
