@@ -12,7 +12,12 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "download:simple": "ts-node src/google-images-downloader.ts",
+    "download:multiple": "ts-node src/google-images-downloader.ts multiple",
+    "download:playwright": "ts-node src/google-images-playwright.ts",
+    "download:direct": "ts-node src/google-images-playwright.ts direct",
+    "test:google": "ts-node src/test-google-images.ts"
   },
   "keywords": [
     "chatgpt",
@@ -27,7 +32,8 @@
   "license": "GPL-3.0",
   "dependencies": {
     "axios": "^1.7.2",
-    "ws": "^8.14.2"
+    "ws": "^8.14.2",
+    "playwright": "^1.40.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
