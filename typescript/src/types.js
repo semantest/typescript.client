@@ -19,7 +19,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AutomationPatternListProvided = exports.AutomationPatternListRequested = exports.TrainingModeDisabled = exports.TrainingModeEnabled = exports.TrainingModeRequested = exports.FileDownloadProgress = exports.FileDownloadFailed = exports.FileDownloadCompleted = exports.FileDownloadStarted = exports.FileDownloadRequested = exports.GoogleImageDownloadFailed = exports.GoogleImageDownloadCompleted = exports.GoogleImageDownloadRequested = exports.ResponseRetrievalFailed = exports.ResponseRetrieved = exports.ResponseRetrievalRequested = exports.PromptSubmissionFailed = exports.PromptSubmitted = exports.PromptSubmissionRequested = exports.ChatSelectionFailed = exports.ChatSelected = exports.ChatSelectionRequested = exports.ProjectSelectionFailed = exports.ProjectSelected = exports.ProjectSelectionRequested = exports.EventResponse = exports.DomainEvent = void 0;
+exports.AutomationPatternListProvided = exports.AutomationPatternListRequested = exports.TrainingModeDisabled = exports.TrainingModeEnabled = exports.TrainingModeRequested = exports.FileDownloadProgress = exports.FileDownloadFailed = exports.FileDownloadCompleted = exports.FileDownloadStarted = exports.FileDownloadRequested = exports.ResponseRetrievalFailed = exports.ResponseRetrieved = exports.ResponseRetrievalRequested = exports.PromptSubmissionFailed = exports.PromptSubmitted = exports.PromptSubmissionRequested = exports.ChatSelectionFailed = exports.ChatSelected = exports.ChatSelectionRequested = exports.ProjectSelectionFailed = exports.ProjectSelected = exports.ProjectSelectionRequested = exports.EventResponse = exports.DomainEvent = void 0;
 // === Base Event Classes ===
 class DomainEvent {
     constructor(correlationId) {
@@ -147,39 +147,6 @@ class ResponseRetrievalFailed extends EventResponse {
     }
 }
 exports.ResponseRetrievalFailed = ResponseRetrievalFailed;
-class GoogleImageDownloadRequested extends DomainEvent {
-    constructor(imageElement, searchQuery, filename, correlationId) {
-        super(correlationId || `google-img-${Date.now()}`);
-        this.imageElement = imageElement;
-        this.searchQuery = searchQuery;
-        this.filename = filename;
-        this.eventType = 'GoogleImageDownloadRequested';
-    }
-}
-exports.GoogleImageDownloadRequested = GoogleImageDownloadRequested;
-class GoogleImageDownloadCompleted extends EventResponse {
-    constructor(downloadId, originalUrl, highResUrl, filename, filepath, metadata, correlationId) {
-        super(correlationId, true);
-        this.downloadId = downloadId;
-        this.originalUrl = originalUrl;
-        this.highResUrl = highResUrl;
-        this.filename = filename;
-        this.filepath = filepath;
-        this.metadata = metadata;
-        this.responseType = 'GoogleImageDownloadCompleted';
-    }
-}
-exports.GoogleImageDownloadCompleted = GoogleImageDownloadCompleted;
-class GoogleImageDownloadFailed extends EventResponse {
-    constructor(originalUrl, reason, phase, correlationId) {
-        super(correlationId, false);
-        this.originalUrl = originalUrl;
-        this.reason = reason;
-        this.phase = phase;
-        this.responseType = 'GoogleImageDownloadFailed';
-    }
-}
-exports.GoogleImageDownloadFailed = GoogleImageDownloadFailed;
 // === File Download Events ===
 class FileDownloadRequested extends DomainEvent {
     constructor(url, filename, conflictAction, saveAs, correlationId) {

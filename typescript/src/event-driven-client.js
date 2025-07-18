@@ -140,15 +140,6 @@ class EventDrivenWebBuddyClient {
         });
     }
     /**
-     * Requests Google Images download
-     */
-    requestGoogleImageDownload(extensionId, tabId, imageElement, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const event = new types_1.GoogleImageDownloadRequested(imageElement, options === null || options === void 0 ? void 0 : options.searchQuery, options === null || options === void 0 ? void 0 : options.filename, this.generateCorrelationId());
-            return yield this.sendEvent(event, extensionId, tabId);
-        });
-    }
-    /**
      * Requests file download
      */
     requestFileDownload(extensionId, tabId, url, options) {
@@ -205,33 +196,6 @@ class EventDrivenWebBuddyClient {
             return results;
         });
     }
-    /**
-     * Batch Google Images download
-     */
-    downloadMultipleGoogleImages(extensionId, tabId, images, options) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { parallel = false, delayBetween = 1000 } = options || {};
-            const downloadEvents = images.map((img, index) => ({
-                event: new types_1.GoogleImageDownloadRequested(img.element, img.searchQuery, img.filename || `image_${index + 1}`, this.generateCorrelationId()),
-                extensionId,
-                tabId
-            }));
-            if (parallel) {
-                return yield this.sendEvents(downloadEvents, { parallel: true });
-            }
-            else {
-                const results = [];
-                for (const eventData of downloadEvents) {
-                    const result = yield this.sendEvent(eventData.event, eventData.extensionId, eventData.tabId);
-                    results.push(result);
-                    if (delayBetween > 0) {
-                        yield this.delay(delayBetween);
-                    }
-                }
-                return results;
-            }
-        });
-    }
     // === Utility Methods ===
     /**
      * Tests connectivity with a simple ping event
@@ -276,7 +240,6 @@ class EventDrivenWebBuddyClient {
             'ChatSelectionRequested': 'SELECT_CHAT',
             'PromptSubmissionRequested': 'FILL_PROMPT',
             'ResponseRetrievalRequested': 'GET_RESPONSE',
-            'GoogleImageDownloadRequested': 'DOWNLOAD_IMAGE',
             'FileDownloadRequested': 'DOWNLOAD_FILE'
         };
         const action = eventTypeMap[event.constructor.name];
@@ -296,14 +259,6 @@ class EventDrivenWebBuddyClient {
             return {
                 selector: event.selector,
                 value: event.promptText
-            };
-        }
-        if (event instanceof types_1.GoogleImageDownloadRequested) {
-            return {
-                selector: 'img', // Will be refined by the Google Images adapter
-                imageElement: event.imageElement,
-                searchQuery: event.searchQuery,
-                filename: event.filename
             };
         }
         if (event instanceof types_1.FileDownloadRequested) {

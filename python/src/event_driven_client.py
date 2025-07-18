@@ -39,9 +39,6 @@ from .events import (
     ResponseRetrievalRequested,
     ResponseRetrieved,
     ResponseRetrievalFailed,
-    GoogleImageDownloadRequested,
-    GoogleImageDownloadCompleted,
-    GoogleImageDownloadFailed,
     FileDownloadRequested,
     FileDownloadStarted,
     FileDownloadFailed,
@@ -211,23 +208,6 @@ class EventDrivenWebBuddyClient:
         
         return await self.send_event(event, extension_id, tab_id)
     
-    async def request_google_image_download(
-        self,
-        extension_id: str,
-        tab_id: int,
-        image_element: Dict[str, Any],
-        search_query: Optional[str] = None,
-        filename: Optional[str] = None
-    ) -> Union[GoogleImageDownloadCompleted, GoogleImageDownloadFailed]:
-        """Requests Google Images download"""
-        event = GoogleImageDownloadRequested(
-            image_element=image_element,
-            search_query=search_query,
-            filename=filename,
-            correlation_id=self._generate_correlation_id()
-        )
-        
-        return await self.send_event(event, extension_id, tab_id)
     
     async def request_file_download(
         self,
@@ -307,45 +287,6 @@ class EventDrivenWebBuddyClient:
         
         return results
     
-    async def download_multiple_google_images(
-        self,
-        extension_id: str,
-        tab_id: int,
-        images: List[Dict[str, Any]],
-        parallel: bool = False,
-        delay_between: float = 1.0
-    ) -> List[Union[GoogleImageDownloadCompleted, GoogleImageDownloadFailed]]:
-        """Batch Google Images download"""
-        download_events = [
-            {
-                'event': GoogleImageDownloadRequested(
-                    image_element=img['element'],
-                    search_query=img.get('search_query'),
-                    filename=img.get('filename', f'image_{i+1}'),
-                    correlation_id=self._generate_correlation_id()
-                ),
-                'extension_id': extension_id,
-                'tab_id': tab_id
-            }
-            for i, img in enumerate(images)
-        ]
-        
-        if parallel:
-            return await self.send_events(download_events, parallel=True)
-        else:
-            results = []
-            for event_data in download_events:
-                result = await self.send_event(
-                    event_data['event'],
-                    event_data['extension_id'],
-                    event_data['tab_id']
-                )
-                results.append(result)
-                
-                if delay_between > 0:
-                    await asyncio.sleep(delay_between)
-                    
-            return results
     
     # === Utility Methods ===
     
@@ -387,7 +328,6 @@ class EventDrivenWebBuddyClient:
             'ChatSelectionRequested': 'SELECT_CHAT',
             'PromptSubmissionRequested': 'FILL_PROMPT',
             'ResponseRetrievalRequested': 'GET_RESPONSE',
-            'GoogleImageDownloadRequested': 'DOWNLOAD_IMAGE',
             'FileDownloadRequested': 'DOWNLOAD_FILE'
         }
         
@@ -406,13 +346,6 @@ class EventDrivenWebBuddyClient:
             return {
                 'selector': event.selector,
                 'value': event.prompt_text
-            }
-        elif isinstance(event, GoogleImageDownloadRequested):
-            return {
-                'selector': 'img',  # Will be refined by Google Images adapter
-                'imageElement': event.image_element,
-                'searchQuery': event.search_query,
-                'filename': event.filename
             }
         elif isinstance(event, FileDownloadRequested):
             return {
@@ -619,7 +552,6 @@ class SyncEventDrivenWebBuddyClient:
             'ChatSelectionRequested': 'SELECT_CHAT',
             'PromptSubmissionRequested': 'FILL_PROMPT',
             'ResponseRetrievalRequested': 'GET_RESPONSE',
-            'GoogleImageDownloadRequested': 'DOWNLOAD_IMAGE',
             'FileDownloadRequested': 'DOWNLOAD_FILE'
         }
         
