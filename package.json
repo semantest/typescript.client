@@ -1,7 +1,7 @@
 {
-  "name": "@chatgpt-buddy/client",
+  "name": "@semantest/client",
   "version": "2.0.0",
-  "description": "TypeScript client SDK for ChatGPT-buddy - AI automation client library",
+  "description": "TypeScript client SDK for Semantest - AI automation client library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,24 +12,25 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf dist",
-    "download:simple": "ts-node src/google-images-downloader.ts",
-    "download:multiple": "ts-node src/google-images-downloader.ts multiple",
-    "download:playwright": "ts-node src/google-images-playwright.ts",
-    "download:direct": "ts-node src/google-images-playwright.ts direct",
-    "test:google": "ts-node src/test-google-images.ts"
+    "clean": "rimraf dist"
   },
   "keywords": [
-    "chatgpt",
+    "semantest",
     "ai-automation",
     "client-sdk",
-    "web-buddy",
     "typescript",
     "event-driven",
     "intelligent-automation"
   ],
-  "author": "rydnr",
+  "author": "Semantest Team <team@semantest.com>",
   "license": "GPL-3.0",
+  "homepage": "https://semantest.com/packages/client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/semantest/semantest.git",
+    "directory": "packages/client"
+  },
+  "bugs": "https://github.com/semantest/semantest/issues",
   "dependencies": {
     "axios": "^1.7.2",
     "ws": "^8.14.2",
@@ -47,11 +48,6 @@
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/rydnr/chatgpt-buddy.git",
-    "directory": "client"
   },
   "files": [
     "dist",

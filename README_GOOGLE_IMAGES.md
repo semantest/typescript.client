@@ -6,7 +6,7 @@ This implementation fulfills the Semantest project spec: searching for "green ho
 
 The implementation provides two approaches:
 
-1. **Web-Buddy Framework Integration** (`google-images-downloader.ts`) - Uses the event-driven architecture to communicate with the Web-Buddy extension
+1. **Semantest Framework Integration** (`google-images-downloader.ts`) - Uses the event-driven architecture to communicate with the Semantest extension
 2. **Playwright Direct Automation** (`google-images-playwright.ts`) - Uses Playwright to directly automate the browser
 
 ## Prerequisites
@@ -17,8 +17,8 @@ cd typescript.client
 npm install
 ```
 
-2. For Web-Buddy integration, ensure:
-   - The Web-Buddy server is running on `http://localhost:3000`
+2. For Semantest integration, ensure:
+   - The Semantest server is running on `http://localhost:3000`
    - The Chrome extension is built and available in `extension.chrome/`
    - You have the extension ID (check Chrome's extension management page)
 
@@ -28,7 +28,7 @@ npm install
 
 ## Usage
 
-### Method 1: Simple Web-Buddy Client (Simulated)
+### Method 1: Simple Semantest Client (Simulated)
 
 This demonstrates the client API without requiring a live browser:
 
@@ -40,15 +40,15 @@ npm run download:simple
 npm run download:multiple
 ```
 
-### Method 2: Playwright with Web-Buddy Extension
+### Method 2: Playwright with Semantest Extension
 
-This launches a real browser with the Web-Buddy extension and performs the search:
+This launches a real browser with the Semantest extension and performs the search:
 
 ```bash
 # Set environment variables (optional)
-export WEBBUDDY_SERVER_URL=http://localhost:3000
-export WEBBUDDY_EXTENSION_PATH=/path/to/extension.chrome
-export WEBBUDDY_EXTENSION_ID=your-extension-id
+export SEMANTEST_SERVER_URL=http://localhost:3000
+export SEMANTEST_EXTENSION_PATH=/path/to/extension.chrome
+export SEMANTEST_EXTENSION_ID=your-extension-id
 
 # Run the automated search and download
 npm run download:playwright
@@ -56,7 +56,7 @@ npm run download:playwright
 
 ### Method 3: Direct Playwright Download
 
-This uses Playwright to directly interact with Google Images without the Web-Buddy extension:
+This uses Playwright to directly interact with Google Images without the Semantest extension:
 
 ```bash
 # Run in headless mode (default)
@@ -72,7 +72,7 @@ HEADLESS=false npm run download:direct
 2. **Searches for "green house"** in the search box
 3. **Extracts image elements** from the search results
 4. **Downloads an image** using one of these methods:
-   - Via Web-Buddy extension (event-driven)
+   - Via Semantest extension (event-driven)
    - Via direct browser automation
 
 ## Output
@@ -89,11 +89,11 @@ downloads/
 
 ## Architecture
 
-### Event-Driven Approach (Web-Buddy)
+### Event-Driven Approach (Semantest)
 
 ```typescript
 // 1. Create client
-const client = new EventDrivenWebBuddyClient(config);
+const client = new EventDrivenSemantestClient(config);
 
 // 2. Send download request event
 const result = await client.requestGoogleImageDownload(
@@ -129,7 +129,7 @@ const images = await extractImageElements(page);
 ## Troubleshooting
 
 1. **Extension not loading**: Ensure the extension is built (`npm run build` in extension.chrome/)
-2. **Server connection failed**: Start the Web-Buddy server (`npm start` in nodejs.server/)
+2. **Server connection failed**: Start the Semantest server (`npm start` in nodejs.server/)
 3. **No images found**: Google Images layout may have changed - update selectors
 4. **Download fails**: Check browser console for CORS or permission issues
 
