@@ -1,192 +1,34 @@
 "use strict";
-/**
- * @fileoverview ChatGPT-Buddy Client Example
- * @description Example usage of the ChatGPT-Buddy client SDK
- * @author rydnr
- */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createChatGPTBuddyClient = void 0;
-exports.main = main;
-const chatgpt_buddy_client_1 = require("./chatgpt-buddy-client");
-Object.defineProperty(exports, "createChatGPTBuddyClient", { enumerable: true, get: function () { return chatgpt_buddy_client_1.createChatGPTBuddyClient; } });
-// Client configuration
-const config = {
-    serverUrl: 'http://localhost:3003',
-    defaultModel: 'gpt-4',
-    enableWebSocket: true,
-    timeout: 30000,
-    // apiKey: 'your-api-key-here' // Optional for authenticated servers
-};
-function demonstrateChatGPTIntegration() {
-    return __awaiter(this, void 0, void 0, function* () {
-        console.log('🤖 ChatGPT-Buddy Client Demo');
-        console.log('=============================\n');
-        try {
-            // Initialize the client
-            console.log('1. Initializing ChatGPT-Buddy client...');
-            const client = yield (0, chatgpt_buddy_client_1.createChatGPTBuddyClient)(config);
-            // Check server health
-            console.log('\n2. Checking server health...');
-            const serverInfo = yield client.getServerInfo();
-            console.log('Server info:', JSON.stringify(serverInfo, null, 2));
-            // Simple ChatGPT interaction
-            console.log('\n3. Testing ChatGPT interaction...');
-            const chatResponse = yield client.chat({
-                prompt: "Explain the benefits of event-driven architecture in web automation",
-                model: "gpt-4",
-                interactionOptions: {
-                    maxTokens: 500,
-                    temperature: 0.7,
-                    enableLearning: true
-                }
-            });
-            console.log('ChatGPT Response:');
-            console.log('Content:', chatResponse.content);
-            console.log('Model used:', chatResponse.modelUsed);
-            console.log('Response time:', `${chatResponse.responseTime}ms`);
-            console.log('Token usage:', chatResponse.usage);
-            // Enable pattern learning
-            console.log('\n4. Enabling pattern learning...');
-            yield client.setPatternLearning({
-                enabled: true,
-                sessionType: 'demo_session',
-                learningLevel: 'intermediate'
-            });
-            // AI-enhanced automation example
-            console.log('\n5. Testing AI-enhanced automation...');
-            const automationResult = yield client.automateWithAI({
-                task: "Research information about TypeScript decorators",
-                instructions: [
-                    "Search for TypeScript decorator documentation",
-                    "Extract key concepts and examples",
-                    "Summarize the main use cases"
-                ],
-                automationOptions: {
-                    enableLearning: true,
-                    aiInsights: true,
-                    crossSiteAdaptation: true
-                }
-            });
-            console.log('Automation Result:');
-            console.log('Success:', automationResult.success);
-            console.log('AI Insights:', automationResult.aiInsights);
-            console.log('Performance:', automationResult.performance);
-            // Get learned patterns
-            console.log('\n6. Retrieving learned patterns...');
-            const patterns = yield client.getPatterns();
-            console.log(`Found ${patterns.length} automation patterns`);
-            patterns.forEach((pattern, index) => {
-                console.log(`  ${index + 1}. ${pattern.name} (confidence: ${pattern.confidence})`);
-            });
-            // Multi-model interaction example
-            console.log('\n7. Testing with different AI models...');
-            const gpt35Response = yield client.chat({
-                prompt: "What is the difference between TypeScript and JavaScript?",
-                model: "gpt-3.5-turbo",
-                interactionOptions: {
-                    maxTokens: 200,
-                    temperature: 0.5
-                }
-            });
-            console.log('GPT-3.5 Response length:', gpt35Response.content.length);
-            console.log('Tokens used:', gpt35Response.usage.totalTokens);
-            // Conversational context example
-            console.log('\n8. Testing contextual conversation...');
-            const contextualResponse = yield client.chat({
-                prompt: "Can you give me a practical example?",
-                context: {
-                    previousInteraction: "We were discussing TypeScript vs JavaScript",
-                    userPreferences: {
-                        codeExamples: true,
-                        detailLevel: "intermediate"
-                    }
-                },
-                interactionOptions: {
-                    contextRetention: true
-                }
-            });
-            console.log('Contextual response:', contextualResponse.content.substring(0, 200) + '...');
-            // Clean up
-            console.log('\n9. Cleaning up...');
-            yield client.setPatternLearning({ enabled: false });
-            yield client.disconnect();
-            console.log('\n✅ Demo completed successfully!');
-        }
-        catch (error) {
-            console.error('\n❌ Demo failed:', error);
-        }
-    });
-}
-function demonstrateAdvancedFeatures() {
-    return __awaiter(this, void 0, void 0, function* () {
-        console.log('\n🚀 Advanced Features Demo');
-        console.log('==========================\n');
-        try {
-            const client = yield (0, chatgpt_buddy_client_1.createChatGPTBuddyClient)(config);
-            // Intelligent model selection based on task
-            console.log('1. Testing intelligent model selection...');
-            // Complex reasoning task (use GPT-4)
-            const reasoningResponse = yield client.chat({
-                prompt: "Design a scalable architecture for a real-time collaboration platform",
-                interactionOptions: {
-                    maxTokens: 1000,
-                    enableLearning: true
-                }
-            });
-            console.log('Complex task model:', reasoningResponse.modelUsed);
-            // Simple task (could use GPT-3.5)
-            const simpleResponse = yield client.chat({
-                prompt: "What is 2 + 2?",
-                model: "gpt-3.5-turbo"
-            });
-            console.log('Simple task model:', simpleResponse.modelUsed);
-            // Workflow automation with AI insights
-            console.log('\n2. Advanced workflow automation...');
-            const workflowResult = yield client.automateWithAI({
-                task: "Create a comprehensive research report",
-                instructions: [
-                    "Search for recent articles on AI automation",
-                    "Extract key statistics and trends",
-                    "Generate executive summary",
-                    "Create actionable recommendations"
-                ],
-                automationOptions: {
-                    enableLearning: true,
-                    aiInsights: true,
-                    errorRecovery: true
-                }
-            });
-            console.log('Workflow insights:', workflowResult.aiInsights.length);
-            console.log('Learned patterns:', workflowResult.learnedPatterns.length);
-            console.log('Performance score:', workflowResult.performance.optimizationScore);
-            yield client.disconnect();
-            console.log('\n✅ Advanced demo completed!');
-        }
-        catch (error) {
-            console.error('\n❌ Advanced demo failed:', error);
-        }
-    });
-}
-// Run the demonstrations
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        yield demonstrateChatGPTIntegration();
-        yield demonstrateAdvancedFeatures();
-    });
-}
-// Run if this file is executed directly
-if (require.main === module) {
-    main().catch(error => {
-        console.error('❌ Unhandled error:', error);
-        process.exit(1);
-    });
-}
+exports.ClientWorkflowError = exports.EventSendError = exports.AutomationPatternListProvided = exports.AutomationPatternListRequested = exports.TrainingModeDisabled = exports.TrainingModeEnabled = exports.TrainingModeRequested = exports.FileDownloadProgress = exports.FileDownloadFailed = exports.FileDownloadCompleted = exports.FileDownloadStarted = exports.FileDownloadRequested = exports.ResponseRetrievalFailed = exports.ResponseRetrieved = exports.ResponseRetrievalRequested = exports.PromptSubmissionFailed = exports.PromptSubmitted = exports.PromptSubmissionRequested = exports.ChatSelectionFailed = exports.ChatSelected = exports.ChatSelectionRequested = exports.ProjectSelectionFailed = exports.ProjectSelected = exports.ProjectSelectionRequested = exports.EventResponse = exports.DomainEvent = exports.EventDrivenWebBuddyClient = void 0;
+var event_driven_client_1 = require("./event-driven-client");
+Object.defineProperty(exports, "EventDrivenWebBuddyClient", { enumerable: true, get: function () { return event_driven_client_1.EventDrivenWebBuddyClient; } });
+var types_1 = require("./types");
+Object.defineProperty(exports, "DomainEvent", { enumerable: true, get: function () { return types_1.DomainEvent; } });
+Object.defineProperty(exports, "EventResponse", { enumerable: true, get: function () { return types_1.EventResponse; } });
+Object.defineProperty(exports, "ProjectSelectionRequested", { enumerable: true, get: function () { return types_1.ProjectSelectionRequested; } });
+Object.defineProperty(exports, "ProjectSelected", { enumerable: true, get: function () { return types_1.ProjectSelected; } });
+Object.defineProperty(exports, "ProjectSelectionFailed", { enumerable: true, get: function () { return types_1.ProjectSelectionFailed; } });
+Object.defineProperty(exports, "ChatSelectionRequested", { enumerable: true, get: function () { return types_1.ChatSelectionRequested; } });
+Object.defineProperty(exports, "ChatSelected", { enumerable: true, get: function () { return types_1.ChatSelected; } });
+Object.defineProperty(exports, "ChatSelectionFailed", { enumerable: true, get: function () { return types_1.ChatSelectionFailed; } });
+Object.defineProperty(exports, "PromptSubmissionRequested", { enumerable: true, get: function () { return types_1.PromptSubmissionRequested; } });
+Object.defineProperty(exports, "PromptSubmitted", { enumerable: true, get: function () { return types_1.PromptSubmitted; } });
+Object.defineProperty(exports, "PromptSubmissionFailed", { enumerable: true, get: function () { return types_1.PromptSubmissionFailed; } });
+Object.defineProperty(exports, "ResponseRetrievalRequested", { enumerable: true, get: function () { return types_1.ResponseRetrievalRequested; } });
+Object.defineProperty(exports, "ResponseRetrieved", { enumerable: true, get: function () { return types_1.ResponseRetrieved; } });
+Object.defineProperty(exports, "ResponseRetrievalFailed", { enumerable: true, get: function () { return types_1.ResponseRetrievalFailed; } });
+Object.defineProperty(exports, "FileDownloadRequested", { enumerable: true, get: function () { return types_1.FileDownloadRequested; } });
+Object.defineProperty(exports, "FileDownloadStarted", { enumerable: true, get: function () { return types_1.FileDownloadStarted; } });
+Object.defineProperty(exports, "FileDownloadCompleted", { enumerable: true, get: function () { return types_1.FileDownloadCompleted; } });
+Object.defineProperty(exports, "FileDownloadFailed", { enumerable: true, get: function () { return types_1.FileDownloadFailed; } });
+Object.defineProperty(exports, "FileDownloadProgress", { enumerable: true, get: function () { return types_1.FileDownloadProgress; } });
+Object.defineProperty(exports, "TrainingModeRequested", { enumerable: true, get: function () { return types_1.TrainingModeRequested; } });
+Object.defineProperty(exports, "TrainingModeEnabled", { enumerable: true, get: function () { return types_1.TrainingModeEnabled; } });
+Object.defineProperty(exports, "TrainingModeDisabled", { enumerable: true, get: function () { return types_1.TrainingModeDisabled; } });
+Object.defineProperty(exports, "AutomationPatternListRequested", { enumerable: true, get: function () { return types_1.AutomationPatternListRequested; } });
+Object.defineProperty(exports, "AutomationPatternListProvided", { enumerable: true, get: function () { return types_1.AutomationPatternListProvided; } });
+var event_driven_client_2 = require("./event-driven-client");
+Object.defineProperty(exports, "EventSendError", { enumerable: true, get: function () { return event_driven_client_2.EventSendError; } });
+Object.defineProperty(exports, "ClientWorkflowError", { enumerable: true, get: function () { return event_driven_client_2.WorkflowError; } });
+//# sourceMappingURL=index.js.map

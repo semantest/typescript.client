@@ -51,7 +51,6 @@ import {
  */
 export class EventDrivenWebBuddyClient {
     private config: ClientConfig;
-    private eventQueue: Map<string, Promise<EventResponse>> = new Map();
 
     constructor(config: ClientConfig) {
         this.config = {
@@ -89,16 +88,16 @@ export class EventDrivenWebBuddyClient {
             };
 
             // Send HTTP request to server
-            const response = await this.makeRequest('POST', '/api/dispatch', dispatchPayload);
+            await this.makeRequest('POST', '/api/dispatch', dispatchPayload);
             
             // Wait for and return the event response
             return await this.waitForEventResponse<TResponse>(correlationId);
             
         } catch (error) {
             throw new EventSendError(
-                `Failed to send event ${event.constructor.name}: ${error.message}`,
+                `Failed to send event ${event.constructor.name}: ${error instanceof Error ? error.message : String(error)}`,
                 event,
-                error
+                error instanceof Error ? error : undefined
             );
         }
     }
@@ -116,7 +115,7 @@ export class EventDrivenWebBuddyClient {
             const promises = events.map(({ event, extensionId, tabId }) => 
                 this.sendEvent(event, extensionId, tabId)
             );
-            return await Promise.all(promises);
+            return await Promise.all(promises) as TResponse[];
         } else {
             const results: TResponse[] = [];
             for (const { event, extensionId, tabId } of events) {
@@ -435,7 +434,7 @@ export class EventDrivenWebBuddyClient {
         const options: RequestInit = {
             method,
             headers,
-            body: data ? JSON.stringify(data) : undefined
+            body: data ? JSON.stringify(data) : null
         };
 
         const response = await this.fetchWithRetry(url, options);

@@ -1,13 +1,32 @@
-# Google Images Downloader - Semantest Implementation
+# @semantest/typescript.client - Generic TypeScript Client
 
-This implementation fulfills the Semantest project spec: searching for "green house" images on Google Images and downloading them locally.
+⚠️ **DEPRECATED**: This document describes legacy Google Images implementation. Google Images functionality has been moved to the dedicated `@semantest/images.google.com` domain module.
 
-## Overview
+## 🏗️ New Architecture
 
-The implementation provides two approaches:
+As of version 2.0.0, Semantest follows **Domain-Driven Design (DDD)** principles:
 
-1. **Semantest Framework Integration** (`google-images-downloader.ts`) - Uses the event-driven architecture to communicate with the Semantest extension
-2. **Playwright Direct Automation** (`google-images-playwright.ts`) - Uses Playwright to directly automate the browser
+- **Domain-specific functionality** belongs in domain modules
+- **Generic client functionality** stays in `typescript.client`
+- **No domain events** should be defined in this module
+
+### Migration Path
+
+```typescript
+// ❌ OLD - Domain events in typescript.client
+import { GoogleImageDownloadRequested } from '@semantest/typescript.client';
+
+// ✅ NEW - Domain events in domain modules
+import { GoogleImageDownloadRequested } from '@semantest/images.google.com/domain/events';
+```
+
+## 📦 Current Module Scope
+
+This module now provides **generic client functionality only**:
+
+1. **Event-Driven Client Base** - Generic event-driven client patterns
+2. **Common Types** - Shared type definitions
+3. **Utility Functions** - Generic client utilities
 
 ## Prerequisites
 
