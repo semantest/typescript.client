@@ -7,13 +7,18 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "cli": "ts-node src/cli/cli.ts",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist"
+  },
+  "bin": {
+    "semantest-cli": "./dist/cli/cli.js"
   },
   "keywords": [
     "semantest",
