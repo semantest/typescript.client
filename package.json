@@ -2,12 +2,15 @@
 
   "name": "@semantest/typescript-client",
   "version": "2.0.0",
-  "description": "TypeScript client SDK for Semantest - AI automation client library",
+  "description": "TypeScript client SDK for SEMANTEST - Event-driven browser automation client library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "semantest": "ts-node src/cli.ts",
+    "semantest-simple": "node src/semantest-simple-cli.js",
     "cli": "ts-node src/cli/cli.ts",
+    "image-cli": "ts-node src/cli/image-generation-cli.ts",
     "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -23,7 +26,8 @@
     "clean": "rimraf dist"
   },
   "bin": {
-    "semantest-cli": "./dist/cli/cli.js"
+    "semantest-cli": "./dist/cli/cli.js",
+    "image-gen-cli": "./dist/cli/image-generation-cli.js"
   },
   "keywords": [
     "semantest",
