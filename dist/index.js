@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.ClientWorkflowError = exports.EventSendError = exports.AutomationPatternListProvided = exports.AutomationPatternListRequested = exports.TrainingModeDisabled = exports.TrainingModeEnabled = exports.TrainingModeRequested = exports.FileDownloadProgress = exports.FileDownloadFailed = exports.FileDownloadCompleted = exports.FileDownloadStarted = exports.FileDownloadRequested = exports.ResponseRetrievalFailed = exports.ResponseRetrieved = exports.ResponseRetrievalRequested = exports.PromptSubmissionFailed = exports.PromptSubmitted = exports.PromptSubmissionRequested = exports.ChatSelectionFailed = exports.ChatSelected = exports.ChatSelectionRequested = exports.ProjectSelectionFailed = exports.ProjectSelected = exports.ProjectSelectionRequested = exports.EventResponse = exports.DomainEvent = exports.EventDrivenWebBuddyClient = void 0;
 var event_driven_client_1 = require("./event-driven-client");
 Object.defineProperty(exports, "EventDrivenWebBuddyClient", { enumerable: true, get: function () { return event_driven_client_1.EventDrivenWebBuddyClient; } });
@@ -31,4 +32,14 @@ Object.defineProperty(exports, "AutomationPatternListProvided", { enumerable: tr
 var event_driven_client_2 = require("./event-driven-client");
 Object.defineProperty(exports, "EventSendError", { enumerable: true, get: function () { return event_driven_client_2.EventSendError; } });
 Object.defineProperty(exports, "ClientWorkflowError", { enumerable: true, get: function () { return event_driven_client_2.WorkflowError; } });
+=======
+exports.CliArgumentParser = exports.EventHttpClient = exports.ImageGenerationRequestedEvent = void 0;
+// Export main modules for library usage
+var ImageGenerationRequestedEvent_1 = require("./events/ImageGenerationRequestedEvent");
+Object.defineProperty(exports, "ImageGenerationRequestedEvent", { enumerable: true, get: function () { return ImageGenerationRequestedEvent_1.ImageGenerationRequestedEvent; } });
+var EventHttpClient_1 = require("./http/EventHttpClient");
+Object.defineProperty(exports, "EventHttpClient", { enumerable: true, get: function () { return EventHttpClient_1.EventHttpClient; } });
+var CliArgumentParser_1 = require("./cli/CliArgumentParser");
+Object.defineProperty(exports, "CliArgumentParser", { enumerable: true, get: function () { return CliArgumentParser_1.CliArgumentParser; } });
+>>>>>>> ace60169 (✨ feat: update typescript.client module)
 //# sourceMappingURL=index.js.map
