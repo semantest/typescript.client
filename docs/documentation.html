@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Semantest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        .docs-container { display: flex; max-width: 1400px; margin: 0 auto; padding: 2rem; }
+        .docs-sidebar { width: 250px; position: sticky; top: 100px; height: fit-content; }
+        .docs-content { flex: 1; margin-left: 3rem; }
+        .docs-nav { list-style: none; }
+        .docs-nav li { margin-bottom: 0.5rem; }
+        .docs-nav a { color: #666; text-decoration: none; }
+        .docs-nav a:hover { color: var(--primary-color); }
+        .code-example { background: #f4f4f4; padding: 1.5rem; border-radius: 0.5rem; margin: 1rem 0; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none;">
+                    <span class="logo-text">Semantest</span>
+                </a>
+                <span class="version">Docs</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="#api">API</a></li>
+                <li><a href="https://github.com/semantest/workspace" class="github-link">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="docs-container" style="margin-top: 100px;">
+        <aside class="docs-sidebar">
+            <h3>Documentation</h3>
+            <ul class="docs-nav">
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="#core-concepts">Core Concepts</a></li>
+                <li><a href="#api">API Reference</a></li>
+                <li><a href="#examples">Examples</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+            </ul>
+        </aside>
+
+        <main class="docs-content">
+            <h1>Semantest Documentation</h1>
+            
+            <section id="installation">
+                <h2>Installation</h2>
+                <p>Semantest can be installed via npm or used directly from the browser extension.</p>
+                
+                <h3>NPM Installation</h3>
+                <div class="code-example">
+                    <pre><code># Install core packages
+npm install @semantest/browser @semantest/nodejs.server
+
+# Install platform-specific packages
+npm install @semantest/chatgpt.com
+npm install @semantest/claude.ai
+npm install @semantest/google.com
+
+# Install TypeScript-EDA foundation
+npm install typescript-eda-domain typescript-eda-infrastructure</code></pre>
+                </div>
+
+                <h3>Chrome Extension</h3>
+                <p>Install the Semantest Chrome Extension from the Chrome Web Store for browser automation.</p>
+            </section>
+
+            <section id="quickstart">
+                <h2>Quick Start</h2>
+                <p>Get up and running with Semantest in minutes.</p>
+                
+                <h3>Basic Usage</h3>
+                <div class="code-example">
+                    <pre><code>import { SemanTestClient } from '@semantest/browser';
+import { ChatGPTClient } from '@semantest/chatgpt.com';
+
+async function main() {
+    // Initialize the client
+    const client = new ChatGPTClient({
+        polling: {
+            interval: 1000,
+            maxRetries: 3
+        }
+    });
+
+    // Connect to ChatGPT
+    await client.initialize();
+
+    // Send a prompt
+    const response = await client.sendPrompt(
+        'Generate a Python function to calculate fibonacci'
+    );
+
+    // Get the response
+    console.log('ChatGPT Response:', response.content);
+
+    // Clean up
+    await client.cleanup();
+}
+
+main().catch(console.error);</code></pre>
+                </div>
+            </section>
+
+            <section id="core-concepts">
+                <h2>Core Concepts</h2>
+                
+                <h3>Semantic Contracts</h3>
+                <p>Semantic contracts define what an application can do, not how it does it. This abstraction makes your automation resilient to UI changes.</p>
+                
+                <h3>Event-Driven Architecture</h3>
+                <p>All operations in Semantest flow through domain events, ensuring loose coupling and high scalability.</p>
+                
+                <h3>Domain-Based Routing</h3>
+                <p>Semantest automatically routes requests to the appropriate AI platform based on the domain in the event payload.</p>
+            </section>
+
+            <section id="api">
+                <h2>API Reference</h2>
+                
+                <h3>SemanTestClient</h3>
+                <div class="code-example">
+                    <pre><code>class SemanTestClient {
+    constructor(config: ClientConfig)
+    async initialize(): Promise<void>
+    async sendPrompt(prompt: string, options?: PromptOptions): Promise<Response>
+    async cleanup(): Promise<void>
+    on(event: string, handler: Function): void
+    off(event: string, handler: Function): void
+}</code></pre>
+                </div>
+
+                <h3>Events</h3>
+                <ul>
+                    <li><code>connected</code> - Fired when connection is established</li>
+                    <li><code>promptSent</code> - Fired when a prompt is sent</li>
+                    <li><code>responseReceived</code> - Fired when a response is received</li>
+                    <li><code>error</code> - Fired when an error occurs</li>
+                    <li><code>disconnected</code> - Fired when connection is closed</li>
+                </ul>
+            </section>
+
+            <section id="examples">
+                <h2>Examples</h2>
+                
+                <h3>Multi-Platform Integration</h3>
+                <div class="code-example">
+                    <pre><code>// Work with multiple AI platforms simultaneously
+import { ChatGPTClient } from '@semantest/chatgpt.com';
+import { ClaudeClient } from '@semantest/claude.ai';
+import { GeminiClient } from '@semantest/google.com';
+
+async function compareAIResponses(prompt: string) {
+    const [chatgptResponse, claudeResponse, geminiResponse] = await Promise.all([
+        new ChatGPTClient().sendPrompt(prompt),
+        new ClaudeClient().sendPrompt(prompt),
+        new GeminiClient().sendPrompt(prompt)
+    ]);
+
+    return {
+        chatgpt: chatgptResponse.content,
+        claude: claudeResponse.content,
+        gemini: geminiResponse.content
+    };
+}</code></pre>
+                </div>
+
+                <h3>Event Handling</h3>
+                <div class="code-example">
+                    <pre><code>// Listen to events for monitoring and debugging
+client.on('promptSent', (event) => {
+    console.log('Prompt sent:', event.prompt);
+    metrics.record('prompt.sent', event);
+});
+
+client.on('responseReceived', (event) => {
+    console.log('Response received:', event.content);
+    metrics.record('response.received', event);
+});
+
+client.on('error', (error) => {
+    console.error('Error occurred:', error);
+    alerting.notify('semantest.error', error);
+});</code></pre>
+                </div>
+            </section>
+
+            <section id="troubleshooting">
+                <h2>Troubleshooting</h2>
+                
+                <h3>Common Issues</h3>
+                <ul>
+                    <li>
+                        <strong>Connection Failed</strong>
+                        <p>Ensure the Chrome extension is installed and the polling server is running.</p>
+                    </li>
+                    <li>
+                        <strong>No Response Received</strong>
+                        <p>Check that the target AI platform tab is open and logged in.</p>
+                    </li>
+                    <li>
+                        <strong>Domain Not Recognized</strong>
+                        <p>Verify the domain field is included in your event payload.</p>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Semantest. Documentation under CC BY 4.0. Code under GPLv3.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - Semantest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        .api-container { max-width: 1200px; margin: 100px auto; padding: 2rem; }
+        .api-method { background: #f8f9fa; padding: 1.5rem; border-radius: 0.5rem; margin: 2rem 0; }
+        .method-signature { background: #2d2d2d; color: #fff; padding: 1rem; border-radius: 0.25rem; font-family: 'JetBrains Mono', monospace; }
+        .param-table { width: 100%; margin: 1rem 0; border-collapse: collapse; }
+        .param-table th, .param-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid #ddd; }
+        .param-table th { background: #f0f0f0; font-weight: 600; }
+        .badge { padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.875rem; font-weight: 600; }
+        .badge-required { background: #ff4444; color: white; }
+        .badge-optional { background: #888; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none;">
+                    <span class="logo-text">Semantest</span>
+                </a>
+                <span class="version">API</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Docs</a></li>
+                <li><a href="#client">Client API</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="https://github.com/semantest/workspace" class="github-link">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="api-container">
+        <h1>API Reference</h1>
+        <p>Complete API reference for Semantest v2.1.0</p>
+
+        <section id="client">
+            <h2>Client API</h2>
+            
+            <div class="api-method">
+                <h3>SemanTestClient</h3>
+                <div class="method-signature">
+                    new SemanTestClient(config: ClientConfig)
+                </div>
+                <p>Creates a new Semantest client instance.</p>
+                
+                <h4>Parameters</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>config.platform</td>
+                            <td>string</td>
+                            <td><span class="badge badge-required">Required</span></td>
+                            <td>Platform to connect to: 'chatgpt', 'claude', 'gemini', or 'auto-detect'</td>
+                        </tr>
+                        <tr>
+                            <td>config.polling</td>
+                            <td>PollingConfig</td>
+                            <td><span class="badge badge-optional">Optional</span></td>
+                            <td>HTTP polling configuration</td>
+                        </tr>
+                        <tr>
+                            <td>config.polling.interval</td>
+                            <td>number</td>
+                            <td><span class="badge badge-optional">Optional</span></td>
+                            <td>Polling interval in milliseconds (default: 1000)</td>
+                        </tr>
+                        <tr>
+                            <td>config.polling.maxRetries</td>
+                            <td>number</td>
+                            <td><span class="badge badge-optional">Optional</span></td>
+                            <td>Maximum retry attempts (default: 3)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="api-method">
+                <h3>initialize()</h3>
+                <div class="method-signature">
+                    async initialize(): Promise&lt;void&gt;
+                </div>
+                <p>Initializes the client and establishes connection to the platform.</p>
+            </div>
+
+            <div class="api-method">
+                <h3>sendPrompt()</h3>
+                <div class="method-signature">
+                    async sendPrompt(prompt: string, options?: PromptOptions): Promise&lt;Response&gt;
+                </div>
+                <p>Sends a prompt to the connected AI platform.</p>
+                
+                <h4>Parameters</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>prompt</td>
+                            <td>string</td>
+                            <td><span class="badge badge-required">Required</span></td>
+                            <td>The prompt text to send</td>
+                        </tr>
+                        <tr>
+                            <td>options.timeout</td>
+                            <td>number</td>
+                            <td><span class="badge badge-optional">Optional</span></td>
+                            <td>Response timeout in milliseconds</td>
+                        </tr>
+                        <tr>
+                            <td>options.correlationId</td>
+                            <td>string</td>
+                            <td><span class="badge badge-optional">Optional</span></td>
+                            <td>Custom correlation ID for tracking</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h4>Returns</h4>
+                <p>Promise resolving to a Response object containing:</p>
+                <ul>
+                    <li><code>content</code> - The AI response text</li>
+                    <li><code>correlationId</code> - Event correlation ID</li>
+                    <li><code>timestamp</code> - Response timestamp</li>
+                    <li><code>platform</code> - Source platform</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="events">
+            <h2>Events API</h2>
+            
+            <div class="api-method">
+                <h3>Domain Events</h3>
+                <p>All operations in Semantest are represented as domain events:</p>
+                
+                <h4>Event Types</h4>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Description</th>
+                            <th>Payload</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>PromptRequestedEvent</td>
+                            <td>Fired when a prompt is requested</td>
+                            <td>{ prompt, domain, correlationId }</td>
+                        </tr>
+                        <tr>
+                            <td>PromptSubmittedEvent</td>
+                            <td>Fired when prompt is sent to AI</td>
+                            <td>{ prompt, platform, correlationId }</td>
+                        </tr>
+                        <tr>
+                            <td>ResponseReceivedEvent</td>
+                            <td>Fired when AI responds</td>
+                            <td>{ content, platform, correlationId }</td>
+                        </tr>
+                        <tr>
+                            <td>ImageGeneratedEvent</td>
+                            <td>Fired when image is generated</td>
+                            <td>{ imageUrl, prompt, correlationId }</td>
+                        </tr>
+                        <tr>
+                            <td>ErrorOccurredEvent</td>
+                            <td>Fired on error</td>
+                            <td>{ error, context, correlationId }</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="api-method">
+                <h3>Event Listeners</h3>
+                <div class="method-signature">
+                    client.on(eventName: string, handler: Function): void
+                    client.off(eventName: string, handler: Function): void
+                </div>
+                
+                <h4>Example</h4>
+                <div class="code-example">
+                    <pre><code>// Listen for responses
+client.on('responseReceived', (event) => {
+    console.log('AI Response:', event.content);
+    console.log('From platform:', event.platform);
+});
+
+// Listen for errors
+client.on('error', (error) => {
+    console.error('Error:', error.message);
+    // Handle error appropriately
+});
+
+// Remove listener
+const handler = (event) => console.log(event);
+client.on('promptSent', handler);
+// Later...
+client.off('promptSent', handler);</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="platforms">
+            <h2>Platform-Specific APIs</h2>
+            
+            <div class="api-method">
+                <h3>ChatGPTClient</h3>
+                <p>Specialized client for ChatGPT integration.</p>
+                <div class="code-example">
+                    <pre><code>import { ChatGPTClient } from '@semantest/chatgpt.com';
+
+const client = new ChatGPTClient({
+    model: 'gpt-4',  // Optional: specify model
+    temperature: 0.7  // Optional: control randomness
+});</code></pre>
+                </div>
+            </div>
+
+            <div class="api-method">
+                <h3>ClaudeClient</h3>
+                <p>Specialized client for Claude.ai integration.</p>
+                <div class="code-example">
+                    <pre><code>import { ClaudeClient } from '@semantest/claude.ai';
+
+const client = new ClaudeClient({
+    model: 'claude-3',  // Optional: specify model
+    maxTokens: 4000    // Optional: response length
+});</code></pre>
+                </div>
+            </div>
+
+            <div class="api-method">
+                <h3>GeminiClient</h3>
+                <p>Specialized client for Google Gemini integration.</p>
+                <div class="code-example">
+                    <pre><code>import { GeminiClient } from '@semantest/google.com';
+
+const client = new GeminiClient({
+    model: 'gemini-pro',  // Optional: specify model
+    safetySettings: {}    // Optional: content filtering
+});</code></pre>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Semantest. API Reference v2.1.0</p>
+        </div>
+    </footer>
+</body>
+</html>
